@@ -17,7 +17,8 @@ const db = mysql.createConnection({
   host: 'main-maindatabase.g.aivencloud.com',     // replace with your host
   user: 'avnadmin',          // replace with your username
   password: 'AVNS_TaU4jmC-KvP2QVdi7z2',  // replace with your password
-  database: 'main' // replace with your database name
+  database: 'main', // replace with your database name
+  port:15039
 });
 
 // Connect to MySQL
