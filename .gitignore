@@ -1,0 +1,2 @@
+# Ignore Node Modules, You can run npm install to include after cloning
+node_modules/
