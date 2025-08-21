@@ -4,7 +4,7 @@ const mysql = require('mysql2');
 const app = express();
 
 // Port on which APIs will be ON
-const port = 3000;
+const port = 15039;
 
 // Middleware to parse JSON
 app.use(express.json());
@@ -14,9 +14,9 @@ app.use(express.urlencoded({extended : true}));
 
 // Create MySQL connection
 const db = mysql.createConnection({
-  host: 'localhost',     // replace with your host
-  user: 'root',          // replace with your username
-  password: '123456789',  // replace with your password
+  host: 'main-maindatabase.g.aivencloud.com',     // replace with your host
+  user: 'avnadmin',          // replace with your username
+  password: 'AVNS_TaU4jmC-KvP2QVdi7z2',  // replace with your password
   database: 'main' // replace with your database name
 });
 
