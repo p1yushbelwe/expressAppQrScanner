@@ -2,13 +2,15 @@
 const express = require('express');
 const mysql = require('mysql2');
 const app = express();
+const cors = require('cors');
 
 // Port on which APIs will be ON
 const port = 15039;
 
 // Middleware to parse JSON
 app.use(express.json());
-
+app.use(cors());
+app.use(cors({ origin: 'http://localhost:3000' }));
 // Allows express and browser to parse provided form string URL
 app.use(express.urlencoded({extended : true}));
 
