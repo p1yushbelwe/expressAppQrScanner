@@ -10,7 +10,7 @@ const port = 15039;
 // Middleware to parse JSON
 app.use(express.json());
 app.use(cors());
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: 'http://127.0.0.1:5500' }));
 // Allows express and browser to parse provided form string URL
 app.use(express.urlencoded({extended : true}));
 
