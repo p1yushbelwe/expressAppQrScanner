@@ -114,6 +114,16 @@ app.post('/post/postQrData', (req,res) => {
   });
 });
 
+
+// Route 6: /members : See all data from attendanceDatabase
+app.get('/members', (req, res) => {
+  const query = 'SELECT * FROM attendanceinfo';
+  db.query(query, (err, results) => {
+    if (err) return res.status(500).json({ error: err });
+    res.json(results);
+  });
+});
+
 // Start server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
