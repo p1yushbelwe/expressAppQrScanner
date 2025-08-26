@@ -140,7 +140,7 @@ app.delete('/user/delete/:deleteId', (req, res) => {
 });
 
 app.delete('/member/delete/:memberId', (req, res) => {
-  const memberId = req.params;
+  const { memberId } = req.params;
   const deleteMemberQuery = 'DELETE FROM attendanceinfo WHERE uniqueMainQrId = ?'
   db.query(deleteMemberQuery, [memberId], (err, result) => {
     if (err) {
