@@ -124,7 +124,19 @@ app.get('/members', (req, res) => {
   });
 });
 
+// Route 7: /user/delete/:deleteId
+app.delete('/user/delete/:deleteId' , (req,res) => {
+  const {deleteId} = req.params;
+  const deleteUserQuery = 'DELETE FROM login WHERE userId = ?';
+  db.query(deleteUserQuery, [deleteId] , (err,result) => {
+    if(err){
+      return res.json({error:'Failed to delete user'});
+    }
+    res.json('User succesfully deleted');
+  })
+});
+
 // Start server
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running successfully!`);
 });
