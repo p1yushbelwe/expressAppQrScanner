@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 app.use(cors({ origin: 'http://127.0.0.1:5500' }));
 // Allows express and browser to parse provided form string URL
-app.use(express.urlencoded({extended : true}));
+app.use(express.urlencoded({ extended: true }));
 
 // Create MySQL connection
 const db = mysql.createConnection({
@@ -20,7 +20,7 @@ const db = mysql.createConnection({
   user: 'avnadmin',          // replace with your username
   password: 'AVNS_TaU4jmC-KvP2QVdi7z2',  // replace with your password
   database: 'main', // replace with your database name
-  port:15039
+  port: 15039
 });
 
 // Connect to MySQL
@@ -72,7 +72,7 @@ app.get('/users', (req, res) => {
 // How Search Url Looks Like :http://localhost:3000/post/postData?userId=24007001&userPassword=12345678&userName=Sachin
 app.post('/post/postUserData', (req, res) => {
 
-  const {userId, userPassword, userName} = req.body;
+  const { userId, userPassword, userName } = req.body;
   // Make sure all parameters are provided
   if (!userId || !userPassword || !userName) {
     return res.status(400).json({ error: "Missing required query parameters" });
@@ -91,24 +91,24 @@ app.post('/post/postUserData', (req, res) => {
 });
 
 // Route 5: /post/postQrData
-app.post('/post/postQrData', (req,res) => {
+app.post('/post/postQrData', (req, res) => {
 
   // Gets Data from body URL 
-  const {uniqueMainQrId, memberName, memberEmail} = req.body;
+  const { uniqueMainQrId, memberName, memberEmail } = req.body;
 
-  
+
   const scannedStatus = 0;
   const postQrCode = 'INSERT INTO attendanceinfo (uniqueMainQrId, memberName, memberEmail,scannedStatus) VALUES (?, ?, ?, ?)';
 
   // Check if required parameters are present
   if (!uniqueMainQrId || !memberEmail || !memberName) {
     return res.status(400).json({ error: "Missing required query parameters" });
-  }  
+  }
 
   // Logic to insert in database
-  db.query(postQrCode, [uniqueMainQrId, memberName, memberEmail, scannedStatus] , (err,result) => {
-    if(err){
-      return res.status(500).json({error : err.message});
+  db.query(postQrCode, [uniqueMainQrId, memberName, memberEmail, scannedStatus], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
     }
     res.json({ message: 'Member Registered', insertedId: result.insertId });
   });
@@ -125,16 +125,36 @@ app.get('/members', (req, res) => {
 });
 
 // Route 7: /user/delete/:deleteId
-app.delete('/user/delete/:deleteId' , (req,res) => {
-  const {deleteId} = req.params;
+app.delete('/user/delete/:deleteId', (req, res) => {
+  const { deleteId } = req.params;
   const deleteUserQuery = 'DELETE FROM login WHERE userId = ?';
-  db.query(deleteUserQuery, [deleteId] , (err,result) => {
-    if(err){
-      return res.json({error:'Failed to delete user'});
+  db.query(deleteUserQuery, [deleteId], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to delete user' });
     }
-    res.json('User succesfully deleted');
+    if (result.affectedRows == 0) {
+      return res.status(404).json({ error: 'No such user in database' })
+    }
+    res.status(200).json('User succesfully deleted');
   })
 });
+
+app.delete('/member/delete/:memberId', (req, res) => {
+  const memberId = req.params;
+  const deleteMemberQuery = 'DELETE FROM attendanceinfo WHERE memberId = ?'
+  db.query(deleteMemberQuery, [memberId], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed To Delete member' })
+    }
+    if (result.affectedRows == 0) {
+      return res.status(404).json({ error: 'No such member in database' });
+    }
+    res.status(200).json('Member successfully deleted');
+  })
+
+});
+
+
 
 // Start server
 app.listen(port, () => {
